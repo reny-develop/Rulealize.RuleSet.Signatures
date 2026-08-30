@@ -1,0 +1,11 @@
+{
+  "$schema": "rulealize/state/v1",
+  "ruleSet": "Rulealize.RuleSet.Signatures@1.0.0",
+
+  "data": {
+    "signatories": ["ann", "bo", "cy"],
+    "required": 2,
+    "signed": [],
+    "outcome": "open"
+  }
+}
