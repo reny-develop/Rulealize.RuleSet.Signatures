@@ -1,7 +1,7 @@
 {
   "$schema": "rulealize/ruleset/v1",
   "id": "Rulealize.RuleSet.Signatures",
-  "version": "1.0.0",
+  "version": "1.1.0",
 
   // A decision that needs several signatures before it counts.
   //
@@ -110,6 +110,18 @@
       "when": { "op": "cmp.eq", "left": "$outcome", "right": "open" },
       "effects": [ { "op": "state.set", "path": "outcome", "value": "refused" } ]
     }
+  },
+
+  // What a host shows of a position, so that no screen reads the state to find out. Four are
+  // the fields themselves; `waiting` is the one a host would otherwise work out for itself,
+  // and is the same definition the inputs offer their domain from, so the screen and the
+  // moves cannot disagree about who may still sign.
+  "projections": {
+    "signatories": "$signatories",
+    "required": "$required",
+    "signed": "$signed",
+    "waiting": "#waiting",
+    "outcome": "$outcome"
   },
 
   "terminal": {

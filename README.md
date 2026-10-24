@@ -8,14 +8,19 @@ A decision that needs several signatures before it counts — a
 | Rule set id | `Rulealize.RuleSet.Signatures` |
 | Package | [`Rulealize.RuleSet.Signatures`](https://www.nuget.org/packages/Rulealize.RuleSet.Signatures) |
 | Inputs | `sign` `decline` |
+| Projections | `signatories` `required` `signed` `waiting` `outcome` |
 | Holds | nothing |
 | Draws on | TypeSchema, State, Comparison, Logic, Binding, Branch, Definition, Arithmetic, Sequence |
 
 ```json
 "uses": [
-  { "ruleSet": "Rulealize.RuleSet.Signatures", "version": "^1.0", "as": "sigs" }
+  { "ruleSet": "Rulealize.RuleSet.Signatures", "version": "^1.1", "as": "sigs" }
 ]
 ```
+
+
+`^1.1`, because the projections arrived in 1.1.0 and `rulealize restore` takes the *lowest*
+version a constraint allows: `^1.0` restores 1.0.0, which declares none.
 
 **`as` is not optional.** An alias defaults to the identifier and may not contain a `.`, so an
 entry that leaves it out is refused, with a message about a key you did not write.
@@ -28,7 +33,7 @@ without reaching for a different document.
 
 ```json
 "sigs": {
-  "ruleSet": "Rulealize.RuleSet.Signatures@1.0.0",
+  "ruleSet": "Rulealize.RuleSet.Signatures@1.1.0",
   "data": {
     "signatories": ["ann", "bo", "cy"],
     "required": 2,
@@ -82,6 +87,20 @@ request half has never heard of a signatory and the signing half has no idea wha
 | `rec.at($sigs, "outcome")` | `open`, `signed` or `refused` |
 | `rec.at($sigs, "signed")` | who has, in the order they did |
 | `rec.at($sigs, "required")` | how many it takes |
+
+inside its own rules, and outside them — on a screen, in a report — the projections, asked of
+the holder's state under the alias it gave this document:
+
+| | |
+| --- | --- |
+| `sigs.signatories` | who may sign |
+| `sigs.required` | how many it takes |
+| `sigs.signed` | who has, in the order they did |
+| `sigs.waiting` | who has not, and so is still offered `sign` and `decline` |
+| `sigs.outcome` | `open`, `signed` or `refused` |
+
+`waiting` is the one worth having: it is the definition the inputs take their domain from, so
+a screen listing who is still to sign and the moves on offer cannot disagree.
 
 `held` sees the candidate as `@who`, which is where "the person who raised it may not sign it"
 is written — a rule about two documents, and one this document could not have.
